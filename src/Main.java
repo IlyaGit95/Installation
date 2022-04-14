@@ -1,4 +1,6 @@
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
 
@@ -24,48 +26,36 @@ public class Main {
 
         StringBuilder stringTepm = new StringBuilder();
 
-        if (src.mkdir()) {
-            stringTepm.append("Создана директория: ").append(src.getName()).append("\n");
-        }
-        if (res.mkdir()) {
-            stringTepm.append("Создана директория: ").append(res.getName()).append("\n");
-        }
-        if (savegames.mkdir()) {
-            stringTepm.append("Создана директория: ").append(savegames.getName()).append("\n");
-        }
-        if (temp.mkdir()) {
-            stringTepm.append("Создана директория: ").append(temp.getName()).append("\n");
+        List<File> dirList = new ArrayList<>();
+        dirList.add(src);
+        dirList.add(res);
+        dirList.add(savegames);
+        dirList.add(temp);
+        dirList.add(main);
+        dirList.add(test);
+        dirList.add(drawables);
+        dirList.add(vectors);
+        dirList.add(icons);
+
+        List<File> fileList = new ArrayList<>();
+        fileList.add(fileMainJava);
+        fileList.add(fileMainUtils);
+        fileList.add(fileTemp);
+
+        for (File file : dirList) {
+            if (file.mkdir()) {
+                stringTepm.append("Создана директория: ").append(file.getName()).append("\n");
+            }
         }
 
-        if (main.mkdir()) {
-            stringTepm.append("Создана директория: ").append(main.getName()).append("\n");
-        }
-        if (test.mkdir()) {
-            stringTepm.append("Создана директория: ").append(test.getName()).append("\n");
-        }
-
-        if (drawables.mkdir()) {
-            stringTepm.append("Создана директория: ").append(drawables.getName()).append("\n");
-        }
-        if (vectors.mkdir()) {
-            stringTepm.append("Создана директория: ").append(vectors.getName()).append("\n");
-        }
-        if (icons.mkdir()) {
-            stringTepm.append("Создана директория: ").append(icons.getName()).append("\n");
-        }
-
-        try {
-            if (fileMainJava.createNewFile()) {
-                stringTepm.append("Создан файл: ").append(fileMainJava.getName()).append("\n");
+        for (File file : fileList) {
+            try {
+                if (file.createNewFile()) {
+                    stringTepm.append("Создан файл: ").append(file.getName()).append("\n");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            if (fileMainUtils.createNewFile()) {
-                stringTepm.append("Создан файл: ").append(fileMainUtils.getName()).append("\n");
-            }
-            if (fileTemp.createNewFile()) {
-                stringTepm.append("Создан файл: ").append(fileTemp.getName()).append("\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
 
         try (FileWriter fileWriter = new FileWriter(fileTemp)) {
