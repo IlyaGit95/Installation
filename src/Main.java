@@ -1,54 +1,51 @@
 import java.io.*;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Main {
+    static StringBuilder stringTepm = new StringBuilder();
 
     public static void main(String[] args) {
-        File games = new File("D:\\Games");
+        List<String> dirList = Arrays.asList(
+                "D:\\Games\\src",
+                "D:\\Games\\res",
+                "D:\\Games\\savegames",
+                "D:\\Games\\temp",
+                "D:\\Games\\src\\main",
+                "D:\\Games\\src\\test",
+                "D:\\Games\\res\\drawables",
+                "D:\\Games\\res\\vectors",
+                "D:\\Games\\res\\icons"
+        );
 
-        File src = new File(games, "src");
-        File res = new File(games, "res");
-        File savegames = new File(games, "savegames");
-        File temp = new File(games, "temp");
+        List<String> fileList = Arrays.asList(
+                "D:\\Games\\src\\main\\Main.java",
+                "D:\\Games\\src\\main\\Utils.java",
+                "D:\\Games\\temp\\temp.txt"
+        );
 
-        File main = new File(src, "main");
-        File test = new File(src, "test");
+        createDir(dirList);
+        createFile(fileList);
 
-        File fileMainJava = new File(main, "Main.java");
-        File fileMainUtils = new File(main, "Utils.java");
+        try (FileWriter fileWriter = new FileWriter("D:\\Games\\temp\\temp.txt")) {
+            fileWriter.write(String.valueOf(stringTepm));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-        File drawables = new File(res, "drawables");
-        File vectors = new File(res, "vectors");
-        File icons = new File(res, "icons");
-
-        File fileTemp = new File(temp, "temp.txt");
-
-        StringBuilder stringTepm = new StringBuilder();
-
-        List<File> dirList = new ArrayList<>();
-        dirList.add(src);
-        dirList.add(res);
-        dirList.add(savegames);
-        dirList.add(temp);
-        dirList.add(main);
-        dirList.add(test);
-        dirList.add(drawables);
-        dirList.add(vectors);
-        dirList.add(icons);
-
-        List<File> fileList = new ArrayList<>();
-        fileList.add(fileMainJava);
-        fileList.add(fileMainUtils);
-        fileList.add(fileTemp);
-
-        for (File file : dirList) {
+    static void createDir(List<String> dirList) {
+        for (String temp : dirList) {
+            File file = new File(temp);
             if (file.mkdir()) {
                 stringTepm.append("Создана директория: ").append(file.getName()).append("\n");
             }
         }
+    }
 
-        for (File file : fileList) {
+    static void createFile(List<String> fileList) {
+        for (String temp : fileList) {
+            File file = new File(temp);
             try {
                 if (file.createNewFile()) {
                     stringTepm.append("Создан файл: ").append(file.getName()).append("\n");
@@ -56,12 +53,6 @@ public class Main {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-
-        try (FileWriter fileWriter = new FileWriter(fileTemp)) {
-            fileWriter.write(String.valueOf(stringTepm));
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }
